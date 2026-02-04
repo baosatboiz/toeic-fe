@@ -1,44 +1,25 @@
 import { useState } from "react";
 import QuestionChoice from "../QuestionChoice";
-const questionListData = [
-  {
-    id: 102,
-    text: "Please submit your travel reimbursement requests _______ the end of the work week.",
-    options: [
-      { label: "A", content: "by" },
-      { label: "B", content: "on" },
-      { label: "C", content: "to" },
-      { label: "D", content: "at" }
-    ]
-  },
-  {
-    id: 103,
-    text: "What is indicated about the new cafeteria menu?",
-    options: [
-      { label: "A", content: "It will change every month." },
-      { label: "B", content: "It offers more vegetarian choices." },
-      { label: "C", content: "It is more expensive than the old one." },
-      { label: "D", content: "It was designed by a famous chef." }
-    ]
-  }
-];
-export default function QuestionGroup ({questionData=questionListData}){
+import { useSession } from "../ExamDynamicProvider";
+export default function QuestionGroup (){
+    const {currentItem} = useSession();
+    const questionData = currentItem.questions;
     const [selected,setSelected] = useState({});
-    const handleClick = ({id,label})=>{
-        setSelected(prev=>({...prev,[id]:label}))
+    const handleClick = ({index,key})=>{
+        setSelected(prev=>({...prev,[index]:key}))
     }
     return (
         <div>
-        {questionData&&questionData.map(({id,text,options})=>(
-            <div key={id}>
-                <p className="fw-bold p-3">{id}. {text}</p>
-                {options.map(({label,content})=>(
+        {questionData&&questionData.map(({content,choices},index)=>(
+            <div>
+                <p className="fw-bold p-3">{content}</p>
+                {choices.map(({key,content},i)=>(
                     <QuestionChoice 
-                    key={`${id}-${label}`}
-                    label={label} 
+                    key={key}
+                    label={key} 
                     content={content} 
-                    isSelected={selected[id]===label}
-                    onClick={()=>handleClick({id,label})}></QuestionChoice>
+                    isSelected={selected[index]===key}
+                    onClick={()=>handleClick({index,key})}></QuestionChoice>
                 ))}
             </div>
         ))}

@@ -1,7 +1,7 @@
 export default function Palete({totalQuestion=200}){
     const question = Array.from({length:totalQuestion},(_,i)=>i+1);
     return (
-        <div className="container mt-2 py-2 border border-secondary shadow-sm" style={{maxWidth:"340px"}}>
+        <div className="container mt-2 py-2 border border-secondary bg-white shadow-sm" style={{maxWidth:"340px"}}>
             <div className="row row-cols-5 g-2 overflow-auto" style={{maxHeight:"400px"}}>
            {question.map(num=>(
             <div className="col">

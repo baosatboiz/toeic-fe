@@ -1,9 +1,5 @@
 import './index.css'
-const data ={
-  label: "A",
-  content: "What is the capital of France?",
-}
-export default function QuestionChoice({label=data.label,content=data.content,isSelected,onClick}) {
+export default function QuestionChoice({label,content,isSelected,onClick}) {
   return (
     <div>
       <button onClick ={onClick} className={`choice-btn rounded-4 btn w-100 d-flex align-items-center mb-2 p-3 gap-3 ${isSelected? 'btn-primary active' : 'btn-light shadow-sm'}`}>

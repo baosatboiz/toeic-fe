@@ -1,5 +1,9 @@
-export default function Pagination({ current = 1, total = 1, onNext, onPrev }) {
-  // Tính % tiến độ
+import { useSession } from "../ExamDynamicProvider";
+import { useExam } from "../ExamStaticProvider";
+
+export default function Pagination() {
+  const {currentIndex:current,next:onNext,prev:onPrev} = useSession();
+  const {total} = useExam();
   const progress = (current / total) * 100;
 
   return (
