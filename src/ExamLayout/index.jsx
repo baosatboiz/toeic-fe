@@ -10,7 +10,7 @@ export default function ExamLayout(){
             <div className="row align-items-start">
                 <div className="col-12 col-md-6 sticky-md-top" style={{top:"80px"}}><MediaContent data={currentItem}/></div>
                 <div className="col-12 col-md-6">
-                    <QuestionGroup key={currentIndex}/>
+                    <QuestionGroup/>
                 </div>
             </div>
         </div>

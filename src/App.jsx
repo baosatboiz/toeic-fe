@@ -18,19 +18,20 @@ import { ExamDynamicProvider } from './ExamDynamicProvider'
 function App() {
   const [exam,setExam] = useState({});
   const [loading,setLoading] = useState(true);
+  const attemptId = "3d26ea19-d522-4651-aa30-d93707a1787f";
   useEffect(()=> {
-    fetchData(`/api/exam-attempts/bb103a25-f617-41af-971e-f9ca40543339/questions`)
+    fetchData(`/api/exam-attempts/${attemptId}/questions`)
     .then(data=>{setExam(data); setLoading(false);console.log(data);})
     .catch(error=>console.log(error))
     },[])
   if(loading) return <div className="d-flex align-items-center justify-content-center h-100">Loading</div>
   return (
     <div className="bg-light">
-      <ExamStaticProvider exam={exam}>
-        <ExamDynamicProvider>
+      {/* <ExamStaticProvider exam={exam}>
+        <ExamDynamicProvider attemptId={attemptId}>
       <AppLayout/>
       </ExamDynamicProvider>
-      </ExamStaticProvider>
+      </ExamStaticProvider> */}
     </div>
   )
 }

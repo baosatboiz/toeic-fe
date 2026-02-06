@@ -1,17 +1,41 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useMemo, useState } from "react";
 import { useExam } from "./ExamStaticProvider";
+import fetchData from "./fetch/fetchData";
 
 export const SessionContext = createContext();
 
 export const ExamDynamicProvider = ({attemptId,children})=>{
         const {flatSequence,total} = useExam();
         const [currentIndex,setCurrentIndex] = useState(0);
+        const [answer,setAnswer] = useState({});
+        const chooseAnswer = useCallback(async (choice)=>{
+            const data = await fetchData(`/api/exam-attempts/${attemptId}/answer`,{
+                method:'POST',
+                body: JSON.stringify(choice)
+            })
+            console.log(data);
+                    
+        },[attemptId])
+        const jumpTo = useCallback((questionId)=>{
+            const index = flatSequence.findIndex(group=>{
+                return group.questions.some(q=>q.questionId===questionId);
+            })
+            console.log(`index ${index}`);
+            setCurrentIndex(index);
+        },[flatSequence])
+        const next = useCallback(()=>setCurrentIndex(i=>i+1),[]);
+        const prev = useCallback(()=>setCurrentIndex(i=>i-1),[]);
+
         const value = useMemo(()=>({
             currentIndex:currentIndex+1,
             currentItem:flatSequence[currentIndex],
-            next:()=>currentIndex<total-1&&setCurrentIndex(i=>i+1),
-            prev:()=>currentIndex>0&&setCurrentIndex(i=>i-1)
-        }),[currentIndex,flatSequence,total]);
+            next,
+            prev,
+            answer,
+            setAnswer,
+            chooseAnswer,
+            jumpTo
+        }),[currentIndex,flatSequence,answer,chooseAnswer]);
         return <SessionContext.Provider value={value}>
             {children}
         </SessionContext.Provider>
