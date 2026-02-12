@@ -16,8 +16,8 @@ const TimeDisplay = React.memo(()=>{
         <span className="text-white">Remaining Time: {beautify()}</span>
     )
 })
-export default function ExamHeader({onSubmit}){
-    const{currentItem} = useSession();
+export default function ExamHeader({}){
+    const{currentItem,onSubmit} = useSession();
     const part = currentItem.partType;
     const {title} = useExam();
     const[palete,setPalete] = useState(false);

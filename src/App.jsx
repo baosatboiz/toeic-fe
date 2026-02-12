@@ -2,20 +2,10 @@ import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import QuestionChoice from './QuestionChoice'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import QuestionGroup from './QuestionGroup'
-import MediaContent from './MediaContent'
-import ExamHeader from './ExamHeader'
-import Palete from './Palete'
-import Pagination from './Pagination'
-import ResultPage from './ResultPage'
-import ExamLayout from './ExamLayout'
-import AppLayout from './AppLayout'
-import { ExamStaticProvider } from './ExamStaticProvider'
 import fetchData from './fetch/fetchData'
-import { ExamDynamicProvider } from './ExamDynamicProvider'
-import ExamSchedule from './ExamSchedule.jsx'
+import ExamSchedule from './ExamSchedule/index.jsx'
+import ResultPage from './ResultPage/index.jsx'
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import ExamPageWrapper from './ExamPageWrapper.jsx'
 function App() {
@@ -41,8 +31,8 @@ function App() {
             </div>
       </div>}
       />      
-      <Route path="/exam/:attemptId" element={<ExamPageWrapper/>}>
-      </Route>
+      <Route path="/exam/:attemptId" element={<ExamPageWrapper/>}></Route>
+      <Route path="/result/:attemptId" element={<ResultPage/>}></Route>
       </Routes>
       </Router>
     </div>

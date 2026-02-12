@@ -11,7 +11,7 @@ export default function MediaContent({data}){
         <div className="">
             {data.imageUrl&&
             <div className="">
-            <img src={data.imageUrl} className="img-fluid object-fit-contain" style={{maxHeight:"530px"}}/>
+            <img src={data.imageUrl} className="img-fluid object-fit-contain" style={{maxHeight:"480px"}}/>
             </div>}
             {data.audioUrl&&
             <div className="p-3">

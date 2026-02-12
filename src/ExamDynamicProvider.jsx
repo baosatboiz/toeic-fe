@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
 import { useExam } from "./ExamStaticProvider";
 import fetchData from "./fetch/fetchData";
+import { useNavigate } from "react-router-dom";
 
 export const SessionContext = createContext();
 
@@ -8,6 +9,7 @@ export const ExamDynamicProvider = ({attemptId,children})=>{
         const {flatSequence,total} = useExam();
         const [currentIndex,setCurrentIndex] = useState(0);
         const [answer,setAnswer] = useState({});
+        const navigate = useNavigate();
         const chooseAnswer = useCallback(async (choice)=>{
             const data = await fetchData(`/api/exam-attempts/${attemptId}/answer`,{
                 method:'POST',
@@ -15,6 +17,12 @@ export const ExamDynamicProvider = ({attemptId,children})=>{
             })
             console.log(data);
                     
+        },[attemptId])
+        const submit = useCallback(async()=>{
+            const data = await fetchData(`/api/exam-attempts/${attemptId}/submit`,{
+                method:'PUT'
+            })
+            navigate(`/result/${attemptId}`,{state:{data:data}});
         },[attemptId])
         const jumpTo = useCallback((questionId)=>{
             const index = flatSequence.findIndex(group=>{
@@ -34,7 +42,8 @@ export const ExamDynamicProvider = ({attemptId,children})=>{
             answer,
             setAnswer,
             chooseAnswer,
-            jumpTo
+            jumpTo,
+            onSubmit:submit
         }),[currentIndex,flatSequence,answer,chooseAnswer]);
         return <SessionContext.Provider value={value}>
             {children}
