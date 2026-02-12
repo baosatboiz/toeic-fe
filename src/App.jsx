@@ -15,23 +15,36 @@ import AppLayout from './AppLayout'
 import { ExamStaticProvider } from './ExamStaticProvider'
 import fetchData from './fetch/fetchData'
 import { ExamDynamicProvider } from './ExamDynamicProvider'
+import ExamSchedule from './ExamSchedule.jsx'
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
+import ExamPageWrapper from './ExamPageWrapper.jsx'
 function App() {
-  const [exam,setExam] = useState({});
+  const [schedule,setSchedule] = useState([]);
   const [loading,setLoading] = useState(true);
-  const attemptId = "3d26ea19-d522-4651-aa30-d93707a1787f";
   useEffect(()=> {
-    fetchData(`/api/exam-attempts/${attemptId}/questions`)
-    .then(data=>{setExam(data); setLoading(false);console.log(data);})
+    fetchData(`/api/exam-schedule`)
+    .then(data=>{setSchedule(data); setLoading(false);console.log(data);})
     .catch(error=>console.log(error))
     },[])
   if(loading) return <div className="d-flex align-items-center justify-content-center h-100">Loading</div>
   return (
     <div className="bg-light">
-      {/* <ExamStaticProvider exam={exam}>
-        <ExamDynamicProvider attemptId={attemptId}>
-      <AppLayout/>
-      </ExamDynamicProvider>
-      </ExamStaticProvider> */}
+      <Router>
+        <Routes>
+      <Route path='/' element={
+        <div className="container py-3">
+          <h2 className="fw-bold text-center">Danh sách bài thi</h2>
+          <div className="d-flex justify-content-center flex-wrap">
+            {schedule.map(s=>
+              <ExamSchedule key ={s.scheduleId} data={s}/>
+            )}
+            </div>
+      </div>}
+      />      
+      <Route path="/exam/:attemptId" element={<ExamPageWrapper/>}>
+      </Route>
+      </Routes>
+      </Router>
     </div>
   )
 }
